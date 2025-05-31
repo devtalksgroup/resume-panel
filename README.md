@@ -1,36 +1,226 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Resume Panel
 
-## Getting Started
+A NextJS-based Frontend for resume management built by Devtalks Group.
 
-First, run the development server:
+## Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Development Setup](#development-setup)
+  - [Option 1: Docker Development (Recommended)](#option-1-docker-development-recommended)
+  - [Option 2: Local Development (Non-Docker)](#option-2-local-development-non-docker)
+- [Environment Configuration](#environment-configuration)
+- [Available Scripts](#available-scripts)
+- [Production Deployment](#production-deployment)
+
+## Prerequisites
+
+### For Docker Development
+
+- [Docker](https://docs.docker.com/get-docker/) (v20.10+)
+- [Docker Compose](https://docs.docker.com/compose/install/) (v2.0+)
+
+### For Local Development
+
+- [Node.js](https://nodejs.org/) (v22.13.1+)
+- [pnpm](https://pnpm.io/) (v10.5.0+)
+
+## Quick Start
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd resume-panel
+   ```
+
+2. **Set up environment variables**
+
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+3. **Start with Docker (Recommended for development)**
+
+   ```bash
+   # For development (database only)
+   docker-compose -f docker-compose.local.yml up -d
+
+   # Install dependencies and start the app locally
+   pnpm install
+   pnpm run start:dev
+   ```
+
+## Development Setup
+
+### Option 1: Docker Development (Recommended)
+
+This approach runs PostgreSQL and pgAdmin in Docker while running the NestJS app locally for better development experience.
+
+1. **Start the database services**
+
+   ```bash
+   docker-compose -f docker-compose.local.yml up -d
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Start the development server**
+
+   ```bash
+   pnpm run start:dev
+   ```
+
+4. **Access the services**
+   - API: http://localhost:3000
+   - API Documentation: http://localhost:3000/api-docs
+   - pgAdmin: http://localhost:5050
+
+### Option 2: Local Development (Non-Docker)
+
+1. **Install PostgreSQL**
+
+   ```bash
+   # Ubuntu/Debian
+   sudo apt update
+   sudo apt install postgresql postgresql-contrib
+
+   # macOS (with Homebrew)
+   brew install postgresql@17
+   brew services start postgresql@17
+
+   # Arch Linux
+   sudo pacman -S postgresql
+   sudo systemctl enable postgresql
+   sudo systemctl start postgresql
+   ```
+
+2. **Create database and user**
+
+   ```bash
+   sudo -u postgres psql
+   ```
+
+   In PostgreSQL shell:
+
+   ```sql
+   CREATE DATABASE resume_api;
+   CREATE USER postgres WITH PASSWORD 'postgres123';
+   GRANT ALL PRIVILEGES ON DATABASE resume_api TO postgres;
+   \q
+   ```
+
+3. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+4. **Configure environment variables**
+   Create a `.env` file with local database settings:
+
+   ```env
+   # Application
+   NODE_ENV=development
+   APP_PORT=3000
+
+   # Database
+   DATABASE_HOST=localhost
+   DATABASE_PORT=5432
+   DATABASE_USER=postgres
+   DATABASE_PASSWORD=postgres123
+   DATABASE_NAME=resume_api
+   ```
+
+5. **Start the development server**
+   ```bash
+   pnpm run start:dev
+   ```
+
+## Environment Configuration
+
+Create a `.env` file in the root directory with the following variables:
+
+```env
+# Application Configuration
+NODE_ENV=development
+APP_PORT=3000
+
+# Database Configuration
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres123
+DATABASE_NAME=resume_api
+
+# pgAdmin Configuration (for Docker setup)
+PGADMIN_EMAIL=admin@example.com
+PGADMIN_PASSWORD=admin123
+PGADMIN_PORT=5050
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Development
+pnpm dev      # Start with hot reload
+pnpm start    # Start with debug mode
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Building
+pnpm build          # Build the application
 
-## Learn More
+# Code Quality
+pnpm run lint           # Run ESLint
+pnpm run format         # Format code with Prettier
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Full Docker Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For production deployment, use the main docker-compose file:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Build and start all services
+docker-compose up -d
 
-## Deploy on Vercel
+# View logs
+docker-compose logs -f app
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Stop services
+docker-compose down
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This setup includes:
+
+- NestJS application container
+- PostgreSQL database
+- pgAdmin for database management
+- Proper networking and volume management
+
+### Environment Variables for Production
+
+Ensure you set secure values for production:
+
+```env
+NODE_ENV=production
+DATABASE_PASSWORD=<secure-password>
+PGADMIN_PASSWORD=<secure-password>
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes
+4. Run tests: `pnpm run test`
+5. Commit your changes: `git commit -am 'Add feature'`
+6. Push to the branch: `git push origin feature-name`
+7. Submit a pull request
+
+---
+
+Built with ❤️ by Devtalks Group
