@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/features/dashboard/components/app-sidebar";
 import { ThemToggle } from "@/components/them-toggle";
 import {
   Breadcrumb,
