@@ -1,16 +1,10 @@
-"use client";
-
-import * as React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 
 export function SidebarLogo() {
   return (
@@ -18,18 +12,21 @@ export function SidebarLogo() {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                logo
+            <Link href="/" className="inline-flex items-center gap-x-2">
+              <Image
+                src="/images/logo/favicon.png"
+                alt="favicon"
+                width={1000}
+                height={1000}
+                className="w-14"
+              />
+              <div className="grid text-sm leading-tight">
+                <span className="truncate font-medium text-left">
+                  Devtalks Group
+                </span>
+                <span className="truncate text-xs">جامعه توسعه دهندگان</span>
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">Devtalks Group</span>
-                <span className="truncate text-xs">Devtalks Group</span>
-              </div>
-            </SidebarMenuButton>
+            </Link>
           </DropdownMenuTrigger>
         </DropdownMenu>
       </SidebarMenuItem>

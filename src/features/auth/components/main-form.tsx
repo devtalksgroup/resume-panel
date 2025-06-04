@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/common/icons";
 import { Spinner } from "@/components/ui/spinners";
 import { getSigninSchema, SigninSchemaType } from "../forms/signin-schema";
+import Image from "next/image";
 
 export default function MainForm() {
   const router = useRouter();
@@ -73,13 +74,19 @@ export default function MainForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="block w-full space-y-6"
       >
-        <div className="py-2">
-          <h1 className="text-xl text-center">
-            ورود به{" "}
-            <Link href={"/"} className="text-indigo-500">
-              Devtalks
-            </Link>
-          </h1>
+        <div className="flex items-center justify-center">
+          <Link
+            href={"/"}
+            className="bg-indigo-950 dark:bg-black/0 inline-block px-4 py-2 rounded-2xl"
+          >
+            <Image
+              src="/images/logo/logo-white.png"
+              alt="favicon"
+              width={1000}
+              height={1000}
+              className="w-50"
+            />
+          </Link>
         </div>
 
         {error && (
@@ -170,7 +177,7 @@ export default function MainForm() {
           />
         </div>
 
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col">
           <Button type="submit" disabled={isProcessing}>
             {isProcessing ? <Spinner className="size-4 animate-spin" /> : null}
             ادامه
